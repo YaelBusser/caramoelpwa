@@ -1,0 +1,7 @@
+{
+  "name": "caramoelmobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
