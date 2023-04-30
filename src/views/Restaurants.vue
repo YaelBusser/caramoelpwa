@@ -10,7 +10,15 @@
              @click="redirectProduits(commerce);"
              class="commerce">
           <img :src="`http://192.168.68.29/${commerce['LIEN_IMG']}` " class="img-resto">
-          <p>{{ commerce["NOM_COMMERCE"] }}</p>
+          <div class="description">
+            <p>{{ commerce["NOM_COMMERCE"] }}</p>
+            <p class="p-description">{{ commerce["type"] }}</p>
+            <p class="p-description">{{commerce["ADRESSE_COMMERCE"]}}</p>
+            <div class="note">
+              <i class="fa-solid fa-star"></i>
+              <p>{{ commerce["note"] }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -48,6 +56,39 @@ export default {
 </script>
 
 <style scoped>
+.p-description{
+  font-size: 12px!important;
+  font-family: Roboto!important;
+  font-weight: 500!important;
+  color: rgba(0,0,0,0.5)!important;
+  margin-top: 5px!important;
+}
+.note {
+  display: flex;
+  gap: 5px;
+  margin-top: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.note p {
+  font-family: 'Roboto' !important;
+  font-weight: 500!important;
+  font-size: 13px!important;
+}
+
+.note i {
+  color: #ee7017;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  width: 100%;
+}
+
 .commerces {
   max-width: 100%;
   display: flex;

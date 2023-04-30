@@ -82,7 +82,7 @@ export default {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background-color: #6c211c;
+  background-color: #ee7017;
   color: white;
   border-radius: 10px;
   padding: 1rem;
@@ -90,7 +90,7 @@ export default {
 }
 
 input {
-  background-color: #ee7017;
+  background-color: white;
   padding: 1rem;
   width: 80%;
   border: none;
@@ -98,18 +98,25 @@ input {
 }
 
 input::placeholder {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.5);
 }
 
 input[type="button"] {
-  width: 50%;
-  background-color: #cc5704;
-  color: white;
+  background-color: white;
+  color: #ee7017;
   cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 img {
   width: 100px;
+  background-color: white;
+  border-radius: 50%;
+  padding-top: 1.1rem;
+  padding-bottom: 1.1rem;
+  padding-left: 0.9rem;
+  padding-right: 0.9rem;
 }
 
 a {

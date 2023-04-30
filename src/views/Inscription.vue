@@ -1,7 +1,6 @@
 <template>
   <div class="block">
     <div class="container">
-      <img src="https://i.ibb.co/gyP5VF3/logo-caramoel.png" />
       <input type="text" placeholder="nom" v-model="nom" />
       <input type="text" placeholder="prénom" v-model="prenom" />
       <input type="email" placeholder="mail" v-model="mail" />
@@ -80,14 +79,14 @@ export default {
   align-items: center;
   gap: 20px;
   width: 80%;
-  background-color: #6c211c;
+  background-color: #ee7017;
   color: white;
   border-radius: 10px;
-  padding: 1rem;
+  padding-top: 1.5rem;
 }
 
 input {
-  background-color: #ee7017;
+  background-color: white;
   padding: 1rem;
   border: none;
   border-radius: 10px;
@@ -95,14 +94,15 @@ input {
 }
 
 input::placeholder {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.5);
 }
 
 input[type="button"] {
-  width: 50%;
-  background-color: #cc5704;
-  color: white;
+  background-color: white;
+  color: #ee7017;
   cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 img {

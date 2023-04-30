@@ -3,7 +3,7 @@
   <div class="main-home">
     <div class="sub-main-home">
       <div class="card-home">
-        <img src="https://i.ibb.co/4fnbvsR/logo-Caramoel-clair.png" class="logo">
+        <img src="http://192.168.68.29/img/logo-caramoel-sans.png" class="logo">
 
       </div>
     </div>
@@ -47,10 +47,9 @@ export default {
   align-items: center;
 }
 .logo{
-  width: 100px;
-  height: 100px;
+  width: 75px;
   margin-top: 20px;
-  clip-path: inset(0px 0px 35px);
+  margin-left: 20px;
 }
 h1{
   text-transform: uppercase;

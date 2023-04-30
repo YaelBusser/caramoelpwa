@@ -1,42 +1,46 @@
 <template>
+  <router-link to="/commandes" v-if="getUser" class="shop">
+    <i class="fa-solid fa-cart-shopping"></i>
+  </router-link>
   <header class="header" :class="{ 'scrolled': scrolled }">
-    <i v-if="toggleMenu" class="fa-solid fa-xmark" :class="{ 'icon-scrolled': scrolled }" @click="animMenu"></i>
+
+
     <i v-if="$route.path === '/' && toggleMenu === false" class="fa-solid fa-bars"
        :class="{ 'icon-scrolled': scrolled }" @click="animMenu"></i>
 
     <i v-if="$route.path !== '/'" class="fa-solid fa-arrow-left" :class="{ 'icon-scrolled': scrolled }"
        @click="back(); animBack()"></i>
 
-    <img src="https://i.ibb.co/gyP5VF3/logo-caramoel.png" :class="{ 'img-scrolled': scrolled }">
     <h2 :class="{ 'h2-scrolled': scrolled }" :style="$route.path === '/' ? 'color: black' : ''">{{ h2 }}</h2>
-    <div class="menu" :style="toggleMenu ? 'width: 100%; opacity: 1; z-index: 100;' : 'opacity: 0; z-index: -1;'">
-      <nav class="nav">
-        <h1>caramoël</h1>
-        <div class="nav-link">
-          <router-link to="/" @click="animMenu">
-            <div class="item">
-              <i class="fa-solid fa-house"></i>
-            </div>
-          </router-link>
-          <router-link to="/resto" @click="animMenu">
-            <div class="item">
-              <i class="fa-solid fa-utensils"></i>
-            </div>
-          </router-link>
-          <router-link to="/connexion" v-if="!getUser" @click="animMenu">
-            <div class="item">
-              <i class="fa-solid fa-user"></i>
-            </div>
-          </router-link>
-          <router-link to="/profile" v-else @click="animMenu">
-            <div class="item">
-              <i class="fa-solid fa-user"></i>
-            </div>
-          </router-link>
-        </div>
-      </nav>
-    </div>
   </header>
+  <div class="menu" :style="toggleMenu ? 'width: 100%; opacity: 1; z-index: 999;' : 'opacity: 0; z-index: -1;'">
+    <i class="fa-solid fa-xmark" @click="animMenu"></i>
+    <nav class="nav">
+      <h1>caramoël</h1>
+      <div class="nav-link">
+        <router-link to="/" @click="animMenu">
+          <div class="item">
+            <i class="fa-solid fa-house"></i>
+          </div>
+        </router-link>
+        <router-link to="/resto" @click="animMenu">
+          <div class="item">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+        </router-link>
+        <router-link to="/connexion" v-if="!getUser" @click="animMenu">
+          <div class="item">
+            <i class="fa-solid fa-user"></i>
+          </div>
+        </router-link>
+        <router-link to="/profile" v-else @click="animMenu">
+          <div class="item">
+            <i class="fa-solid fa-user"></i>
+          </div>
+        </router-link>
+      </div>
+    </nav>
+  </div>
 </template>
 <script>
 import {mapGetters} from "vuex";
@@ -72,7 +76,7 @@ export default {
           this.h2 = "Restaurants";
           break;
         case "/produits":
-          this.h2 = "Produits";
+          this.h2 = "Cuisines";
           break;
         case "/":
           this.h2 = "Accueil";
@@ -105,12 +109,42 @@ export default {
 </script>
 
 <style scoped>
+.fa-xmark {
+  position: absolute;
+  top: 15px;
+  left: 12px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+  background-color: white;
+  border-radius: 50%;
+  color: #ee7017;
+}
+
+.shop {
+  position: fixed;
+  right: 10px;
+  top: 13px;
+  z-index: 103;
+  border-radius: 50%;
+}
+
+.shop i {
+  font-size: 20px;
+  color: #ee7017;
+  cursor: pointer;
+  background-color: white;
+  padding: 0.9rem;
+  border-radius: 50%;
+}
+
 h1 {
-  font-size: 50px;
+  font-size: 45px;
   letter-spacing: 5px;
   text-transform: uppercase;
   font-family: Roboto;
-  font-weight: 100;
+  font-weight: 300;
   color: white;
 }
 
@@ -129,10 +163,17 @@ a {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
   gap: 10px;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  bottom: 10%;
+}
+
+.menu i {
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }
 
 .nav-link {
@@ -153,6 +194,11 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 50%;
 }
 
 .menu {
@@ -162,14 +208,15 @@ a {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 99;
   transition: all 0.3s ease-in-out;
   background: url("https://i.ibb.co/tK4sYk5/Capture-d-cran-2023-04-29-060355.png") no-repeat;
   background-size: cover;
+  z-index: -1;
 }
 
 .header {
   width: 100%;
+  min-width: 100%;
   max-width: 100%;
   height: 10vh;
   background-color: white;
@@ -180,7 +227,7 @@ a {
   background-color: rgba(0, 0, 0, 0);
   transition: all 0.3s ease-in-out;
   border-radius: 0 0 30px 30px;
-  z-index: 101;
+  z-index: 102;
 }
 
 h2 {
@@ -188,16 +235,7 @@ h2 {
   position: absolute;
   top: 2px;
   text-align: center;
-  z-index: 99;
-}
-
-header img {
-  width: 50px;
-  z-index: 100;
-  opacity: 0;
-  transition: all 0.3s ease-in-out;
-  position: absolute;
-  right: 10px;
+  z-index: 1;
 }
 
 header i {
@@ -214,17 +252,12 @@ header i {
   position: absolute;
   left: 10px;
   top: 13px;
-  z-index: 101;
+  z-index: 102;
   text-align: center;
 }
 
 .scrolled {
   background-color: white;
-}
-
-.img-scrolled {
-  opacity: 1;
-
 }
 
 .icon-scrolled {
