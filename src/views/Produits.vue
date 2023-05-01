@@ -34,7 +34,7 @@
         <div class="block-produits" v-if="cat4.length > 0">
           <div v-for="(produit, index) in cat4" class="produits" @click="modal(produit['ID_PROD'])">
             <img :src="`http://192.168.68.29/${produit.LIEN_IMG}`"
-                 class="img-produit-boissons">
+                 class="img-produit">
             <p class="nom-prod">{{ produit["NOM_PROD"] }}</p>
           </div>
         </div>
@@ -58,11 +58,14 @@
       <div class="sub-main">
         <h3 class="hero-h3">{{ detailsProduit['NOM_PROD'] }}</h3>
         <p class="ingredients">{{ detailsProduit["ingredients"] }}</p>
-        <p class="prix">{{ detailsProduit["PRIX_PROD"] }}<span>€</span></p>
-        <div class="qte">
+        <p class="prix">{{ detailsProduit["PRIX_PROD"] * counter }}<span>€</span></p>
+        <div class="qte" v-if="detailsProduit['QUANTITE_PROD'] > 0">
           <button @click="decrementCounter" class="btn-left">-</button>
           <input type="number" v-model="counter" min="0" max="100"/>
           <button @click="incrementCounter" class="btn-right">+</button>
+        </div>
+        <div v-else>
+          <p class="rupture-stock">Produit en rupture de stock</p>
         </div>
         <div class="details">
           <div class="note">
@@ -79,18 +82,19 @@
           </div>
         </div>
         <p class="description">{{ detailsProduit["DESCRIPTION_PROD"] }}</p>
-        <button class="btn-add">ajouter au panier</button>
+        <button class="btn-add" v-if="detailsProduit['QUANTITE_PROD'] > 0" @click="addPanier(detailsProduit['ID_COMMERCE'], detailsProduit['ID_PROD'], counter, detailsProduit['PRIX_PROD'] * counter)">ajouter au panier</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {mapGetters} from "vuex";
 export default {
   name: "Produits",
   data() {
     return {
-      counter: 0,
+      counter: 1,
       idCommerce: this.$route.query.id,
       produits: [],
       commerce: [],
@@ -105,6 +109,9 @@ export default {
       detailsProduit: [],
     }
   },
+  computed: {
+    ...mapGetters(['getUser',]),
+  },
   async mounted() {
     await this.fetchRestaurant(this.idCommerce);
     await this.fetchProduits(this.idCommerce);
@@ -112,6 +119,29 @@ export default {
     await this.fetchProduitsParCat(this.idCommerce);
   },
   methods: {
+    addPanier(idCommerce, idProduit, qte, prix){
+      fetch(`http://192.168.68.29/api/addPanier`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id_user: this.getUser.id,
+          id_commerce: idCommerce,
+          id_produit: idProduit,
+          qte: qte,
+          prix: prix
+        })
+      }).then(response => response.json())
+          .then(data => {
+            alert("Produit ajouté dans votre panier avec succès !");
+            console.log(data.message);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+    },
+
     incrementCounter() {
       if (this.counter < 100) {
         this.counter++;
@@ -119,15 +149,15 @@ export default {
       if (this.counter > 100) {
         this.counter = 100;
       }
-      if (this.counter < 0) {
-        this.counter = 0;
+      if (this.counter < 1) {
+        this.counter = 1;
       }
     },
     decrementCounter() {
-      if (this.counter > 0) {
+      if (this.counter > 1) {
         this.counter--;
       }
-      if (this.counter < 0) {
+      if (this.counter < 1) {
         this.counter = 0;
       }
       if (this.counter > 100) {
@@ -218,6 +248,15 @@ export default {
 </script>
 
 <style scoped>
+.rupture-stock{
+  color: white;
+  background-color: #d71604;
+  padding: 1rem;
+  border-radius: 50px 50px 50px 50px;
+  text-align: center;
+  font-family: 'Roboto';
+  font-weight: 500;
+}
 .ingredients {
   margin-block-start: 0;
   margin-block-end: 0;
@@ -375,12 +414,6 @@ button {
   height: 50px;
   object-fit: cover;
   border-radius: 50%;
-}
-
-.img-produit-boissons {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
 }
 
 .produits {

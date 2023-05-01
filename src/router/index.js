@@ -4,7 +4,7 @@ import Restaurants from "../views/Restaurants.vue";
 import Connexion from "../views/Connexion.vue";
 import Inscription from "../views/Inscription.vue";
 import Profile from "../views/Profile.vue";
-import Commandes from "../views/Commandes.vue";
+import Panier from "../views/Panier.vue";
 import Produits from "../views/Produits.vue";
 const routes = [
     {
@@ -33,9 +33,9 @@ const routes = [
         component: Profile,
     },
     {
-        name: 'Commandes',
-        path: '/commandes/:id',
-        component: Commandes,
+        name: 'Panier',
+        path: '/panier',
+        component: Panier,
     },
     {
         name: 'Produits',

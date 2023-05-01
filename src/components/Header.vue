@@ -1,16 +1,12 @@
 <template>
-  <router-link to="/commandes" v-if="getUser" class="shop">
+  <router-link to="/panier" v-if="getUser && $route.path !== '/panier'" class="shop">
     <i class="fa-solid fa-cart-shopping"></i>
   </router-link>
   <header class="header" :class="{ 'scrolled': scrolled }">
-
-
     <i v-if="$route.path === '/' && toggleMenu === false" class="fa-solid fa-bars"
        :class="{ 'icon-scrolled': scrolled }" @click="animMenu"></i>
-
     <i v-if="$route.path !== '/'" class="fa-solid fa-arrow-left" :class="{ 'icon-scrolled': scrolled }"
        @click="back(); animBack()"></i>
-
     <h2 :class="{ 'h2-scrolled': scrolled }" :style="$route.path === '/' ? 'color: black' : ''">{{ h2 }}</h2>
   </header>
   <div class="menu" :style="toggleMenu ? 'width: 100%; opacity: 1; z-index: 999;' : 'opacity: 0; z-index: -1;'">
@@ -72,7 +68,10 @@ export default {
     },
     changedRoute() {
       switch (this.$route.path) {
-        case "/resto":
+        case "/panier":
+          this.h2 = "Panier";
+          break;
+          case "/resto":
           this.h2 = "Restaurants";
           break;
         case "/produits":
