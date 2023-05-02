@@ -181,8 +181,6 @@ export default {
     this.fetchPanierParUserEtParCommerce();
     this.getPrixTotal();
   },
-  updated() {
-  },
   computed: {
     ...mapGetters(['getUser',]),
   },
