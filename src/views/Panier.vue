@@ -5,6 +5,13 @@
   <div className="main">
     <div className="sub-main">
       <h3 className="hero-h3">Votre panier</h3>
+      <div class="modal" :style="toggleModalPayer ? 'bottom: 0;' : '' ">
+        <div class="overflow" @click="payer" :style="toggleModalPayer ? 'top: 0;' : '' "></div>
+        <i class="fa-solid fa-xmark" @click="payer" :style="toggleModalPayer ? 'top: 10px' : ''"></i>
+        <div class="block-type" :style="toggleModalPayer ? 'bottom: 0;' : '' ">
+
+        </div>
+      </div>
       <div class="panier" v-if="panier2.length > 0">
         <h4><i class="fa-solid fa-star"></i>{{ commerce2["NOM_COMMERCE"] }}<i class="fa-solid fa-star"></i></h4>
         <div v-for="panier in panier2">
@@ -37,7 +44,7 @@
             <p>Total</p>
             <p>{{ prixTotal2 }}<span>€</span></p>
           </div>
-          <button class="btn-payer">payer</button>
+          <button class="btn-payer" @click="payer(commerce2['ID_COMMERCE'])">payer</button>
         </div>
       </div>
       <div class="panier" v-if="panier3.length > 0">
@@ -68,6 +75,7 @@
         </div>
         <div class="block-payment">
           <div class="bar"></div>
+          <div class="taxes"></div>
           <div class="prix-total">
             <p>Total</p>
             <p>{{ prixTotal3 }}<span>€</span></p>
@@ -142,7 +150,7 @@
             <p>Total</p>
             <p>{{ prixTotal5 }}<span>€</span></p>
           </div>
-          <button class="btn-payer">payer</button>
+          <button class="btn-payer" @click="payer">payer</button>
         </div>
       </div>
     </div>
@@ -173,6 +181,7 @@ export default {
       prixTotal3: 0,
       prixTotal4: 0,
       prixTotal5: 0,
+      toggleModalPayer: false,
     }
   },
   mounted() {
@@ -185,7 +194,10 @@ export default {
     ...mapGetters(['getUser',]),
   },
   methods: {
-    getPrixTotal(){
+    payer() {
+      this.toggleModalPayer = !this.toggleModalPayer;
+    },
+    getPrixTotal() {
       fetch(`http://192.168.68.29/api/prixTotal/${this.getUser.id}/2`)
           .then(response => response.json())
           .then(data => {
@@ -361,6 +373,54 @@ export default {
 }
 </script>
 <style scoped>
+.block-type {
+  position: fixed;
+  bottom: -40vh;
+  min-width: 100%;
+  left: 0;
+  right: 0;
+  min-height: 50vh;
+  background-color: white;
+  border-radius: 50px 50px 0 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal i {
+  position: fixed;
+  top: -100vh;
+  left: 10px;
+  padding-left: 1.1rem;
+  padding-right: 1.2rem;
+  padding-bottom: 1.1rem;
+  padding-top: 1rem;
+  border-radius: 50%;
+  color: #ee7017;
+  background-color: white;
+  transition: all 0.3s ease-in-out;
+}
+
+.overflow {
+  position: fixed;
+  top: -100vh;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 60vh;
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+.modal {
+  min-width: 100%;
+  position: fixed;
+  height: 100vh;
+  bottom: -100vh;
+  left: 0;
+  right: 0;
+  transition: all 0.3s ease-in-out;
+  z-index: 150;
+}
+
 .bar {
   border-bottom: 1px dashed #ee7017;
   height: 0;

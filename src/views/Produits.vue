@@ -5,6 +5,7 @@
   <div class="main">
     <div class="sub-main">
       <h3 class="hero-h3">{{ commerce["NOM_COMMERCE"] }}</h3>
+      <p class="adresse">{{ commerce["ADRESSE_COMMERCE"] }}</p>
       <div class="categorie-produit">
         <h4 class="type-plat" v-if="cat1.length > 0">Entrées</h4>
         <div class="block-produits" v-if="cat1.length > 0">
@@ -248,6 +249,14 @@ export default {
 </script>
 
 <style scoped>
+.adresse{
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-top: -25px;
+  font-size: 12px;
+  font-family: 'Roboto';
+  font-weight: 300;
+}
 .rupture-stock{
   color: white;
   background-color: #d71604;

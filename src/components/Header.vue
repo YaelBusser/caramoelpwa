@@ -1,7 +1,6 @@
 <template>
     <router-link to="/panier" v-if="getUser && $route.path !== '/panier'" class="shop">
         <i class="fa-solid fa-cart-shopping"></i>
-        <p class="nb" v-if="nb > 0">{{ nb }}</p>
     </router-link>
     <header class="header" :class="{ 'scrolled': scrolled }">
         <i v-if="$route.path === '/' && toggleMenu === false" class="fa-solid fa-bars"
@@ -54,14 +53,11 @@ export default {
             h2: "",
             toggleMenu: false,
             toggleBack: false,
-            nbTab: [],
-            nb: 0,
         }
     },
     mounted() {
         window.addEventListener('scroll', this.handleScroll);
         this.changedRoute();
-        this.getNbPanier();
     },
     watch: {
         '$route.path'(to, from) {
@@ -69,18 +65,6 @@ export default {
         },
     },
     methods: {
-        getNbPanier() {
-            fetch(`http://192.168.68.29/api/panier/${this.getUser.id}`)
-                .then(response => response.json())
-                .then(data => {
-                    for (const d in data) {
-                        this.nbTab.push(data[d]);
-                        this.nb = this.nbTab.length;
-                    }
-                }).catch(error => {
-                console.log(error);
-            });
-        },
         back() {
             this.$router.go(-1);
         },
