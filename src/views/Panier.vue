@@ -1,156 +1,71 @@
 <template>
-  <div className="hero">
+  <div class="hero">
     <img :src=" `http://192.168.68.29/img/shopping-cart.jpg`" class="img-hero">
   </div>
-  <div className="main">
-    <div className="sub-main">
-      <h3 className="hero-h3">Votre panier</h3>
-      <div class="modal" :style="toggleModalPayer ? 'bottom: 0;' : '' ">
-        <div class="overflow" @click="payer" :style="toggleModalPayer ? 'top: 0;' : '' "></div>
-        <i class="fa-solid fa-xmark" @click="payer" :style="toggleModalPayer ? 'top: 10px' : ''"></i>
-        <div class="block-type" :style="toggleModalPayer ? 'bottom: 0;' : '' ">
+  <div class="main">
+    <div class="sub-main">
+      <h3 class="hero-h3">Votre panier</h3>
+      <div class="panier" v-for="commerce in commerces">
+        <div class="modal" :style="toggleModalPayer ? 'bottom: 0;' : '' ">
+          <div class="overflow" @click="payer" :style="toggleModalPayer ? 'top: 0;' : '' "></div>
+          <div class="block-type" :style="toggleModalPayer ? 'bottom: 0;' : '' ">
+            <i class="fa-solid fa-xmark" @click="payer"></i>
+            <div class="mode-cmd">
+              <p class="title-mode-cmd">choisissez votre mode de commande</p>
+              <div class="buttons">
+                <button @click="clickAndCollect = true;"><i
+                    class="fa-solid fa-shop"></i>
+                  <p>Click & Collect</p></button>
+                <button @click="livraison = true;"><i class="fa-solid fa-truck"></i>
+                  <p>Livraison</p></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h4 v-if="commerce"><i class="fa-solid fa-star"></i>{{ commerce["NOM_COMMERCE"] }}<i
+            class="fa-solid fa-star"></i></h4>
+        <div v-for="(panier, index) in paniers" class="main-prod">
+          <div class="produits" v-if="commerce['ID_COMMERCE'] === panier['id_commerce']">
+            <div class="block-produit">
+              <img :src="`http://192.168.68.29/${panier['LIEN_IMG']}`"
+                   class="img-produit">
+              <div class="infos-prod">
+                <p>
+                  {{ panier["NOM_PROD"] }}
+                </p>
+                <div class="prix-qte">
+                  <p>
+                    <span class="valuePrix">{{ panier["prix"] * panier["qte"] }}</span><span class="euro">€</span>
+                  </p>
+                  <div class="qte">
+                    <button
+                        @click="decrement(panier)"
+                        class="btn-left">-
+                    </button>
+                    <input type="number" v-model="panier['qte']" min="0" max="100"/>
+                    <button @click="increment(panier);" class="btn-right">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
         </div>
-      </div>
-      <div class="panier" v-if="panier2.length > 0">
-        <h4><i class="fa-solid fa-star"></i>{{ commerce2["NOM_COMMERCE"] }}<i class="fa-solid fa-star"></i></h4>
-        <div v-for="panier in panier2">
-          <div v-for="produit in produits" class="produits" v-if="panier['qte'] > 0">
-            <img :src="`http://192.168.68.29/${produit.LIEN_IMG}`"
-                 class="img-produit" v-if="produit['ID_PROD'] === panier['id_produit']">
-            <div class="infos-prod" v-if="panier['id_produit'] === produit['ID_PROD']">
-              <p>
-                {{ produit["NOM_PROD"] }}
-              </p>
-              <div class="prix-qte">
-                <p>
-                  <span class="valuePrix">{{ produit["PRIX_PROD"] * panier['qte'] }}</span><span class="euro">€</span>
-                </p>
-                <div class="qte">
-                  <button
-                      @click="decrement(panier, commerce2['ID_COMMERCE'], produit['ID_PROD'], panier['qte'])"
-                      class="btn-left">-
-                  </button>
-                  <input type="number" v-model="panier['qte']" min="0" max="100"/>
-                  <button @click="increment(panier, produit['ID_PROD'], panier['qte']);" class="btn-right">+</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="block-payment">
+          <div class="preparation">
+            <p>Préparation</p>
+            <p>{{ totalTpsPrepa(commerce.ID_COMMERCE) }} min</p>
+          </div>
+          <div class="preparation">
+            <p>Total (HT) </p>
+            <p>{{ totalHtByCommerce(commerce.ID_COMMERCE) }}<span>€</span></p>
+          </div>
           <div class="bar"></div>
           <div class="prix-total">
-            <p>Total</p>
-            <p>{{ prixTotal2 }}<span>€</span></p>
+            <p>Total </p>
+            <p>{{ totalByCommerce(commerce.ID_COMMERCE) }}<span>€</span></p>
           </div>
-          <button class="btn-payer" @click="payer(commerce2['ID_COMMERCE'])">payer</button>
-        </div>
-      </div>
-      <div class="panier" v-if="panier3.length > 0">
-        <h4><i class="fa-solid fa-star"></i>{{ commerce3["NOM_COMMERCE"] }}<i class="fa-solid fa-star"></i></h4>
-        <div v-for="panier in panier3">
-          <div v-for="produit in produits" class="produits" v-if="panier['qte'] > 0">
-            <img :src="`http://192.168.68.29/${produit.LIEN_IMG}`"
-                 class="img-produit" v-if="produit['ID_PROD'] === panier['id_produit']">
-            <div class="infos-prod" v-if="panier['id_produit'] === produit['ID_PROD']">
-              <p>
-                {{ produit["NOM_PROD"] }}
-              </p>
-              <div class="prix-qte">
-                <p>
-                  <span class="valuePrix">{{ produit["PRIX_PROD"] * panier['qte'] }}</span><span class="euro">€</span>
-                </p>
-                <div class="qte">
-                  <button
-                      @click="decrement(panier, commerce3['ID_COMMERCE'], produit['ID_PROD'], panier['qte'])"
-                      class="btn-left">-
-                  </button>
-                  <input type="number" v-model="panier['qte']" min="0" max="100"/>
-                  <button @click="increment(panier, produit['ID_PROD'], panier['qte']);" class="btn-right">+</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="block-payment">
-          <div class="bar"></div>
-          <div class="taxes"></div>
-          <div class="prix-total">
-            <p>Total</p>
-            <p>{{ prixTotal3 }}<span>€</span></p>
-          </div>
-          <button class="btn-payer">payer</button>
-        </div>
-      </div>
-      <div class="panier" v-if="panier4.length > 0">
-        <h4><i class="fa-solid fa-star"></i>{{ commerce4["NOM_COMMERCE"] }}<i class="fa-solid fa-star"></i></h4>
-        <div v-for="panier in panier4">
-          <div v-for="produit in produits" class="produits" v-if="panier['qte'] > 0">
-            <img :src="`http://192.168.68.29/${produit.LIEN_IMG}`"
-                 class="img-produit" v-if="produit['ID_PROD'] === panier['id_produit']">
-            <div class="infos-prod" v-if="panier['id_produit'] === produit['ID_PROD']">
-              <p>
-                {{ produit["NOM_PROD"] }}
-              </p>
-              <div class="prix-qte">
-                <p>
-                  <span class="valuePrix">{{ produit["PRIX_PROD"] * panier['qte'] }}</span><span class="euro">€</span>
-                </p>
-                <div class="qte">
-                  <button
-                      @click="decrement(panier, commerce4['ID_COMMERCE'], produit['ID_PROD'], panier['qte'])"
-                      class="btn-left">-
-                  </button>
-                  <input type="number" v-model="panier['qte']" min="0" max="100"/>
-                  <button @click="increment(panier, produit['ID_PROD'], panier['qte']);" class="btn-right">+</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="block-payment">
-          <div class="bar"></div>
-          <div class="prix-total">
-            <p>Total</p>
-            <p>{{ prixTotal4 }}<span>€</span></p>
-          </div>
-          <button class="btn-payer">payer</button>
-        </div>
-      </div>
-      <div class="panier" v-if="panier5.length > 0">
-        <h4><i class="fa-solid fa-star"></i>{{ commerce5["NOM_COMMERCE"] }}<i class="fa-solid fa-star"></i></h4>
-        <div v-for="panier in panier5">
-          <div v-for="produit in produits" class="produits" v-if="panier['qte'] > 0">
-            <img :src="`http://192.168.68.29/${produit.LIEN_IMG}`"
-                 class="img-produit" v-if="produit['ID_PROD'] === panier['id_produit']">
-            <div class="infos-prod" v-if="panier['id_produit'] === produit['ID_PROD']">
-              <p>
-                {{ produit["NOM_PROD"] }}
-              </p>
-              <div class="prix-qte">
-                <p>
-                  <span class="valuePrix">{{ produit["PRIX_PROD"] * panier['qte'] }}</span><span class="euro">€</span>
-                </p>
-                <div class="qte">
-                  <button
-                      @click="decrement(panier, commerce5['ID_COMMERCE'], produit['ID_PROD'], panier['qte'])"
-                      class="btn-left">-
-                  </button>
-                  <input type="number" v-model="panier['qte']" min="0" max="100"/>
-                  <button @click="increment(panier, produit['ID_PROD'], panier['qte']);" class="btn-right">+</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="block-payment">
-          <div class="bar"></div>
-          <div class="prix-total">
-            <p>Total</p>
-            <p>{{ prixTotal5 }}<span>€</span></p>
-          </div>
-          <button class="btn-payer" @click="payer">payer</button>
+          <button class="btn-payer" @click="payer()">payer</button>
         </div>
       </div>
     </div>
@@ -166,132 +81,74 @@ export default {
   data() {
     return {
       paniers: [],
-      commerce2: [],
-      commerce3: [],
-      commerce4: [],
-      commerce5: [],
+      commerces: [],
       produits: [],
-      panier2: [],
-      panier3: [],
-      panier4: [],
-      panier5: [],
-      valeur2: 0,
-      valeurs2: [],
-      prixTotal2: 0,
-      prixTotal3: 0,
-      prixTotal4: 0,
-      prixTotal5: 0,
       toggleModalPayer: false,
+      clickAndCollect: false,
+      livraison: false,
     }
   },
+
   mounted() {
     this.listeCommerces();
     this.listeProduits();
-    this.fetchPanierParUserEtParCommerce();
-    this.getPrixTotal();
+    this.fetchPanier();
   },
   computed: {
     ...mapGetters(['getUser',]),
   },
   methods: {
+    totalHtByCommerce(id_commerce) {
+      let totalHt = 0;
+      for (let panier of this.paniers) {
+        if (panier.id_commerce === id_commerce) {
+          totalHt += Number(panier.prix) * Number(panier.qte);
+        }
+      }
+      return totalHt.toFixed(2);
+    },
+    totalByCommerce(id_commerce) {
+      let total = 0;
+      for (let panier of this.paniers) {
+        if (panier.id_commerce === id_commerce) {
+          total += Number(panier.prix) * Number(panier.qte) * 1.1;
+        }
+      }
+      return total.toFixed(2);
+    },
+    totalTpsPrepa(id_commerce) {
+      let tps = 0;
+      for (let panier of this.paniers) {
+        if (panier.id_commerce === id_commerce) {
+          tps += Number(panier.tps_prepa);
+        }
+      }
+      return tps;
+    },
     payer() {
       this.toggleModalPayer = !this.toggleModalPayer;
     },
-    getPrixTotal() {
-      fetch(`http://192.168.68.29/api/prixTotal/${this.getUser.id}/2`)
-          .then(response => response.json())
-          .then(data => {
-            this.prixTotal2 = data['prix'];
-          }).catch(error => {
-        console.log(error);
-      });
-      fetch(`http://192.168.68.29/api/prixTotal/${this.getUser.id}/3`)
-          .then(response => response.json())
-          .then(data => {
-            this.prixTotal3 = data['prix'];
-          }).catch(error => {
-        console.log(error);
-      });
-      fetch(`http://192.168.68.29/api/prixTotal/${this.getUser.id}/4`)
-          .then(response => response.json())
-          .then(data => {
-            this.prixTotal4 = data['prix'];
-          }).catch(error => {
-        console.log(error);
-      });
-      fetch(`http://192.168.68.29/api/prixTotal/${this.getUser.id}/5`)
-          .then(response => response.json())
-          .then(data => {
-            this.prixTotal5 = data['prix'];
-          }).catch(error => {
-        console.log(error);
-      });
-    },
-    decrement(panier, idCommerce, idProduit, qte) {
-      panier['qte']--;
-      this.getPrixTotal();
+    decrement(panier) {
+      if (panier['qte'] > 0) {
+        panier['qte']--;
+      }
       if (panier['qte'] === 0) {
-        fetch(`http://192.168.68.29/api/panier/${this.getUser.id}/${idCommerce}/${idProduit}`, {
+        fetch(`http://192.168.68.29/api/panier/${panier.id_panier}`, {
           method: 'DELETE'
         }).then(response => response.json())
             .then(data => {
               console.log(data.message);
+              window.location.reload();
             })
             .catch(error => {
               console.log(error);
             });
       }
-      if (panier['qte'] > 100) {
-        panier['qte'] = 100;
-      }
-      fetch(`http://192.168.68.29/api/modifQtePanier`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id_user: this.getUser.id,
-          id_produit: idProduit,
-          qte: qte - 1,
-        })
-      }).then(response => response.json())
-          .then(data => {
-            console.log(data.message);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      this.getPrixTotal();
     },
-    increment(panier, idProduit, qte) {
-      if (panier['qte'] < 100) {
+    increment(panier) {
+      if (panier['qte'] >= 1 && panier['qte'] < 10) {
         panier['qte']++;
       }
-      if (panier['qte'] > 100) {
-        panier['qte'] = 100;
-      }
-      if (panier['qte'] < 1) {
-        panier['qte'] = 1;
-      }
-      this.getPrixTotal();
-      fetch(`http://192.168.68.29/api/modifQtePanier`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id_user: this.getUser.id,
-          id_produit: idProduit,
-          qte: qte + 1,
-        })
-      }).then(response => response.json())
-          .then(data => {
-            console.log(data.message);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      this.getPrixTotal();
     },
     async listeProduits() {
       fetch(`http://192.168.68.29/api/listeProduit`)
@@ -303,68 +160,19 @@ export default {
       });
     },
     async listeCommerces() {
-      fetch(`http://192.168.68.29/api/commerce/2`)
+      fetch(`http://192.168.68.29/api/listeCommerce`)
           .then(response => response.json())
           .then(data => {
-            this.commerce2 = data;
-            this.commerce2 = this.commerce2[0];
-          }).catch(error => {
-        console.log(error);
-      });
-      fetch(`http://192.168.68.29/api/commerce/3`)
-          .then(response => response.json())
-          .then(data => {
-            this.commerce3 = data;
-            this.commerce3 = this.commerce3[0];
-          }).catch(error => {
-        console.log(error);
-      });
-      fetch(`http://192.168.68.29/api/commerce/4`)
-          .then(response => response.json())
-          .then(data => {
-            this.commerce4 = data;
-            this.commerce4 = this.commerce4[0];
-          }).catch(error => {
-        console.log(error);
-      });
-      fetch(`http://192.168.68.29/api/commerce/5`)
-          .then(response => response.json())
-          .then(data => {
-            this.commerce5 = data;
-            this.commerce5 = this.commerce5[0];
+            this.commerces = data;
           }).catch(error => {
         console.log(error);
       });
     },
-    async fetchPanierParUserEtParCommerce() {
-      fetch(`http://192.168.68.29/api/panier/${this.getUser.id}/2}`)
+    async fetchPanier() {
+      fetch(`http://192.168.68.29/api/panier/${this.getUser.id}`)
           .then(response => response.json())
           .then(data => {
-            this.panier2 = data;
-            for (const panier in this.panier2) {
-              this.prix2 += this.panier2[panier]["prix"];
-            }
-          }).catch(error => {
-        console.log(error);
-      });
-      fetch(`http://192.168.68.29/api/panier/${this.getUser.id}/3}`)
-          .then(response => response.json())
-          .then(data => {
-            this.panier3 = data;
-          }).catch(error => {
-        console.log(error);
-      });
-      fetch(`http://192.168.68.29/api/panier/${this.getUser.id}/4}`)
-          .then(response => response.json())
-          .then(data => {
-            this.panier4 = data;
-          }).catch(error => {
-        console.log(error);
-      });
-      fetch(`http://192.168.68.29/api/panier/${this.getUser.id}/5}`)
-          .then(response => response.json())
-          .then(data => {
-            this.panier5 = data;
+            this.paniers = data;
           }).catch(error => {
         console.log(error);
       });
@@ -373,22 +181,85 @@ export default {
 }
 </script>
 <style scoped>
+.main-prod{
+  min-width: 100%;
+}
+.block-produit {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buttons button i {
+  padding: 0;
+  color: #ee7017;
+  margin: 0;
+  height: 10px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.buttons button {
+  background-color: white;
+  border: 1px solid rgba(238, 112, 23, 0.25);
+  font-family: 'Roboto';
+  font-weight: 400;
+  height: 50px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.buttons button:hover {
+  background-color: rgba(238, 112, 23, 0.15);
+}
+
+button p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  font-family: 'Roboto';
+  font-weight: 400;
+  height: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.mode-cmd {
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title-mode-cmd {
+  font-family: 'Roboto';
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 13px;
+}
+
 .block-type {
   position: fixed;
-  bottom: -40vh;
+  bottom: -50vh;
   min-width: 100%;
   left: 0;
   right: 0;
   min-height: 50vh;
   background-color: white;
-  border-radius: 50px 50px 0 0;
+  border-radius: 30px 30px 0 0;
   transition: all 0.3s ease-in-out;
 }
 
 .modal i {
-  position: fixed;
-  top: -100vh;
-  left: 10px;
   padding-left: 1.1rem;
   padding-right: 1.2rem;
   padding-bottom: 1.1rem;
@@ -397,6 +268,8 @@ export default {
   color: #ee7017;
   background-color: white;
   transition: all 0.3s ease-in-out;
+  margin-left: 10px;
+  margin-top: 10px;
 }
 
 .overflow {
@@ -406,7 +279,7 @@ export default {
   right: 0;
   width: 100%;
   height: 60vh;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
 }
 
@@ -437,6 +310,14 @@ export default {
   justify-content: space-between;
   font-family: 'Roboto';
   font-weight: 500;
+}
+
+.preparation {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Roboto';
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .qte {
@@ -542,13 +423,9 @@ h4 i {
 }
 
 .produits {
-  display: flex;
-  padding: 0;
-  justify-content: start;
-  align-items: center;
   gap: 10px;
   width: 100%;
-  margin-top: 2px;
+  border-radius: 10px;
 }
 
 .img-produit {
@@ -568,7 +445,9 @@ h4 i {
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
 h2 {

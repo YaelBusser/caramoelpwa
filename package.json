@@ -19,6 +19,7 @@
     "@capacitor/status-bar": "next",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
+    "nodemailer": "^6.9.1",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
     "vuex": "^4.1.0",

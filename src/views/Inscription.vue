@@ -1,17 +1,20 @@
 <template>
   <div class="block">
     <div class="container">
-      <input type="text" placeholder="nom" v-model="nom" />
-      <input type="text" placeholder="prénom" v-model="prenom" />
-      <input type="email" placeholder="mail" v-model="mail" />
-      <input type="tel" maxlength="10" placeholder="téléphone" v-model="tel" />
-      <input type="password" placeholder="Mot de passe" v-model="mdp" />
-      <input type="button" value="s'inscrire" @click="register" />
-      <p>Déjà inscris ? Clique <router-link to="/connexion">ici</router-link></p>
+      <input type="text" placeholder="nom" v-model="nom"/>
+      <input type="text" placeholder="prénom" v-model="prenom"/>
+      <input type="email" placeholder="mail" v-model="mail"/>
+      <input type="tel" maxlength="10" placeholder="téléphone" v-model="tel"/>
+      <input type="text" placeholder="Adresse" v-model="adresse"/>
+      <input type="password" placeholder="Mot de passe" v-model="mdp"/>
+      <input type="button" value="s'inscrire" @click="register"/>
+      <p>Déjà inscris ? Clique
+        <router-link to="/connexion">ici</router-link>
+      </p>
     </div>
   </div>
 </template>
-  
+
 <script>
 import {mapGetters} from "vuex";
 
@@ -23,6 +26,7 @@ export default {
       mdp: "",
       mail: "",
       tel: "",
+      adresse: "",
     };
   },
   computed: {
@@ -35,31 +39,32 @@ export default {
   },
   methods: {
     async register() {
-      const requestOptions = {
+      fetch(`http://192.168.68.29/api/userCreate`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
           name: this.nom,
           firstname: this.prenom,
           email: this.mail,
           telephone: this.tel,
-          password: this.mdp
+          password: this.mdp,
+          adresse: this.adresse,
         })
-      };
-
-      fetch('http://192.168.68.29/api/userCreate', requestOptions)
-        .then(response => response.json())
-        .then(data => {
-          alert("Votre compte a été créer avec succès !");
-        })
-        .catch(error => {
-          alert("Erreur !" + error);
-        });
+      }).then(response => response.json())
+          .then(data => {
+            console.log(data.message);
+            alert("Votre compte a été créer avec succès !" + data);
+          })
+          .catch(error => {
+            console.log(error)
+          });
     }
   },
 };
 </script>
-  
+
 <style scoped>
 .block {
   width: 100%;

@@ -79,7 +79,7 @@
           </div>
           <div class="tps">
             <i class="fa-solid fa-clock"></i>
-            <p>{{ detailsProduit["tps_prepa"] }}</p>
+            <p>{{ detailsProduit["tps_prepa"] }} min</p>
           </div>
         </div>
         <p class="description">{{ detailsProduit["DESCRIPTION_PROD"] }}</p>
@@ -144,11 +144,11 @@ export default {
     },
 
     incrementCounter() {
-      if (this.counter < 100) {
+      if (this.counter < 10) {
         this.counter++;
       }
-      if (this.counter > 100) {
-        this.counter = 100;
+      if (this.counter > 10) {
+        this.counter = 10;
       }
       if (this.counter < 1) {
         this.counter = 1;
@@ -161,8 +161,8 @@ export default {
       if (this.counter < 1) {
         this.counter = 0;
       }
-      if (this.counter > 100) {
-        this.counter = 100;
+      if (this.counter > 10) {
+        this.counter = 10;
       }
     },
     modal(id) {

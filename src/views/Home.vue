@@ -3,19 +3,26 @@
   <div class="main-home">
     <div class="sub-main-home">
       <div class="card-home">
-        <img src="http://192.168.68.29/img/logo-caramoel-sans.png" class="logo">
-
+        <p>Vos plats à Camoël !</p>
       </div>
+      <div>
+        <p v-if="getUser">Bonjour {{ getUser.firstname }} !</p>
+      </div>
+      <p>Nous avons le plaisir de vous proposer les meilleurs restaurants de Camoël.</p>
     </div>
   </div>
 </template>
 <script>
+import {mapGetters} from "vuex";
 
 export default {
   data() {
     return {
       commerces: [],
     }
+  },
+  computed: {
+    ...mapGetters(['getUser',]),
   },
   mounted() {
     this.fetchCommerces();
@@ -46,12 +53,16 @@ export default {
   justify-content: start;
   align-items: center;
 }
-.logo{
-  width: 75px;
-  margin-top: 20px;
-  margin-left: 20px;
+
+.card-home p {
+  color: black;
+  font-family: 'Roboto';
+  font-weight: 800;
+  text-align: center;
+  width: 100%;
 }
-h1{
+
+h1 {
   text-transform: uppercase;
   font-family: Roboto;
   font-weight: 300;
