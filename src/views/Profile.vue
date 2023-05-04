@@ -1,6 +1,10 @@
 <template>
-  <div class="container">
-    <div class="userInfos">
+  <div class="hero">
+    <img :src=" `http://192.168.68.29/img/shopping-cart.jpg`" class="img-hero">
+  </div>
+  <div class="main">
+    <div class="sub-main">
+      <h3 class="hero-h3"></h3>
       <div class="blockUserInfos">
         <i class="fa-solid fa-gear"></i>
         <div class="labelFor">
@@ -24,9 +28,9 @@
           <p class="tel">{{ getUser.adresse }}</p>
         </div>
       </div>
-    </div>
-    <div class="deco">
-      <button @click="logout">déconnexion</button>
+      <div class="deco">
+        <button @click="logout">déconnexion</button>
+      </div>
     </div>
   </div>
 </template>
@@ -75,7 +79,7 @@ export default {
 }
 
 p {
-  color: #ecf5ff;
+  color: black;
   font-family: Bahnschrift;
   margin-block-start: 0;
   margin-block-end: 0;
@@ -100,12 +104,13 @@ p {
 }
 
 .labelFor p:nth-child(1) {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(0,0,0, 0.9);
   width: 81px;
   text-align: left;
   text-transform: uppercase;
-  letter-spacing: 5px;
+  letter-spacing: 2px;
 }
+
 .labelFor p:nth-child(2) {
   text-align: left;
   font-size: 13px;
@@ -114,12 +119,16 @@ p {
 .blockUserInfos {
   width: 100%;
   position: relative;
+  background-color: #f8f8f8;
+  width: 100%;
+  border-radius: 10px;
 }
-.blockUserInfos i{
+
+.blockUserInfos i {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 10px;
+  right: 10px;
   color: #ee7017;
-  font-size: 20px;
+  font-size: 15px;
 }
 </style>
