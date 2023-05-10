@@ -5,18 +5,22 @@
   <div class="main">
     <div class="sub-main">
       <h3 class="hero-h3">Votre panier</h3>
-      <div class="panier" v-for="commerce in commerces">
+      <div class="panier" v-for="(commerce, number) in commerces">
         <div class="modal" :style="toggleModalPayer ? 'bottom: 0;' : '' ">
-          <div class="overflow" @click="payer" :style="toggleModalPayer ? 'top: 0;' : '' "></div>
+          <div class="overflow" @click="payer(number)" :style="toggleModalPayer ? 'top: 0;' : '' "></div>
           <div class="block-type" :style="toggleModalPayer ? 'bottom: 0;' : '' ">
-            <i class="fa-solid fa-xmark" @click="payer"></i>
+            <i class="fa-solid fa-xmark" @click="payer(number)"></i>
             <div class="mode-cmd">
               <p class="title-mode-cmd">choisissez votre mode de commande</p>
               <div class="buttons">
-                <button @click="clickAndCollect = true;"><i
-                    class="fa-solid fa-shop"></i>
+                <button
+                    @click="addVente(commerces[idCommerce]['ID_COMMERCE']); clickAndCollect = true; livraison = false;">
+                  <i
+                      class="fa-solid fa-shop"></i>
                   <p>Click & Collect</p></button>
-                <button @click="livraison = true;"><i class="fa-solid fa-truck"></i>
+                <button
+                    @click="addVente(commerces[idCommerce]['ID_COMMERCE']) ;livraison = true; clickAndCollect = false;">
+                  <i class="fa-solid fa-truck"></i>
                   <p>Livraison</p></button>
               </div>
             </div>
@@ -24,6 +28,9 @@
         </div>
         <h4 v-if="commerce"><i class="fa-solid fa-star"></i>{{ commerce["NOM_COMMERCE"] }}<i
             class="fa-solid fa-star"></i></h4>
+        <p class="adresse">
+          {{ commerce["ADRESSE_COMMERCE"] }}
+        </p>
         <div v-for="(panier, index) in paniers" class="main-prod">
           <div class="produits" v-if="commerce['ID_COMMERCE'] === panier['id_commerce']">
             <div class="block-produit">
@@ -65,7 +72,7 @@
             <p>Total </p>
             <p>{{ totalByCommerce(commerce.ID_COMMERCE) }}<span>€</span></p>
           </div>
-          <button class="btn-payer" @click="payer()">payer</button>
+          <button class="btn-payer" @click="payer(number)">payer</button>
         </div>
       </div>
     </div>
@@ -86,6 +93,8 @@ export default {
       toggleModalPayer: false,
       clickAndCollect: false,
       livraison: false,
+      idCommerce: 0,
+      lastIdVente: 0,
     }
   },
 
@@ -98,6 +107,39 @@ export default {
     ...mapGetters(['getUser',]),
   },
   methods: {
+    async addVente(idCommerce) {
+      fetch(`http://192.168.68.29/api/addVente/${idCommerce}`)
+          .then(response => response.json())
+          .then(data => {
+
+          }).catch(error => {
+        console.log(error);
+      });
+      if (this.clickAndCollect) {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const date = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        fetch(`http://192.168.68.29/api/addClickCollect/${this.getUser.id}/${date}`)
+            .then(response => response.json())
+            .then(data => {
+
+            }).catch(error => {
+          console.log(error);
+        });
+        fetch(`http://192.168.68.29/api/addDetenir/${this.getUser.id}/${date}`)
+            .then(response => response.json())
+            .then(data => {
+
+            }).catch(error => {
+          console.log(error);
+        });
+      }
+    },
     totalHtByCommerce(id_commerce) {
       let totalHt = 0;
       for (let panier of this.paniers) {
@@ -125,8 +167,9 @@ export default {
       }
       return tps;
     },
-    payer() {
+    payer(number) {
       this.toggleModalPayer = !this.toggleModalPayer;
+      this.idCommerce = number;
     },
     decrement(panier) {
       if (panier['qte'] > 0) {
@@ -181,9 +224,20 @@ export default {
 }
 </script>
 <style scoped>
-.main-prod{
+.adresse {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  font-family: 'Roboto';
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.5);
+  padding: 0;
+  margin-top: -30px;
+}
+
+.main-prod {
   min-width: 100%;
 }
+
 .block-produit {
   width: 100%;
   display: flex;
@@ -447,7 +501,7 @@ h4 i {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20
+  gap: 20px;
 }
 
 h2 {

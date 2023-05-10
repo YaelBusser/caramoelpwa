@@ -1,35 +1,22 @@
 <template>
   <div class="hero">
-    <img :src=" `http://192.168.68.29/img/shopping-cart.jpg`" class="img-hero">
+    <img :src=" `http://192.168.68.29/img/profile.jpg`" class="img-hero">
   </div>
   <div class="main">
     <div class="sub-main">
-      <h3 class="hero-h3"></h3>
-      <div class="blockUserInfos">
-        <i class="fa-solid fa-gear"></i>
-        <div class="labelFor">
-          <p>Prénom</p>
-          <p>{{ getUser.firstname }}</p>
-        </div>
-        <div class="labelFor">
-          <p>Nom</p>
-          <p>{{ getUser.name }}</p>
-        </div>
-        <div class="labelFor">
-          <p>Mail</p>
-          <p>{{ getUser.email }}</p>
-        </div>
-        <div class="labelFor">
-          <p>Téléphone</p>
-          <p class="tel">{{ getUser.telephone }}</p>
-        </div>
-        <div class="labelFor">
-          <p>Adresse</p>
-          <p class="tel">{{ getUser.adresse }}</p>
-        </div>
-      </div>
-      <div class="deco">
-        <button @click="logout">déconnexion</button>
+      <h3 class="hero-h3">{{ getUser.firstname }} {{ getUser.name }}</h3>
+      <div class="buttons">
+        <button>
+          <i class="fa-solid fa-list"></i>
+          Mes commandes
+        </button>
+        <router-link to="/profileInfos">
+          <button>
+            <i class="fa-regular fa-user"></i>
+            Mes informations
+          </button>
+        </router-link>
+        <button @click="logout" class="deco">se déconnecter</button>
       </div>
     </div>
   </div>
@@ -56,26 +43,41 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  position: absolute;
-  width: 100%;
-  top: 8vh;
+.buttons {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  gap: 10px;
 }
 
-.userInfos, .deco {
-  background-color: #6c211c;
-  margin-top: 5vh;
+.buttons button {
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ee7017;
+  font-family: 'Roboto';
+  font-weight: 400;
+  padding: 1rem;
+  border-radius: 5px;
   display: flex;
-  flex-direction: column;
+  justify-content: start;
   align-items: center;
   gap: 10px;
-  width: 80%;
-  padding: 1rem;
-  border-radius: 10px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.deco {
+  bottom: 0;
+  width: 100%;
+  border: 1px solid #ee7017;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-family: 'Roboto';
+  font-weight: 300!important;
+  display: flex;
+  margin-top: 50px;
+  justify-content: center!important;
 }
 
 p {
@@ -104,7 +106,7 @@ p {
 }
 
 .labelFor p:nth-child(1) {
-  color: rgba(0,0,0, 0.9);
+  color: rgba(0, 0, 0, 0.9);
   width: 81px;
   text-align: left;
   text-transform: uppercase;

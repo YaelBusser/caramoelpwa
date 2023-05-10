@@ -77,10 +77,16 @@ export default {
     },
     changedRoute() {
       switch (this.$route.path) {
+        case "/profileInfos":
+          this.h2 = "Mes informations";
+          break;
+        case "/inscription":
+          this.h2 = "inscription";
+          break;
         case "/profile":
           this.h2 = "Profil";
           break;
-          case "/panier":
+        case "/panier":
           this.h2 = "Panier";
           break;
         case "/resto":

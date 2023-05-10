@@ -6,6 +6,7 @@ import Inscription from "../views/Inscription.vue";
 import Profile from "../views/Profile.vue";
 import Panier from "../views/Panier.vue";
 import Produits from "../views/Produits.vue";
+import ProfileInfos from "../views/ProfileInfos.vue";
 const routes = [
     {
         name: 'Home',
@@ -41,6 +42,11 @@ const routes = [
         name: 'Produits',
         path: '/produits',
         component: Produits,
+    },
+    {
+        name: 'ProfileInfos',
+        path: '/profileInfos',
+        component: ProfileInfos,
     },
 ];
 const router = createRouter({
