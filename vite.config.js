@@ -6,5 +6,8 @@ export default defineConfig({
   plugins: [vue()],
   optimizeDeps: {
     exclude: ['vue']
+  },
+  rollupOptions: {
+    external: ['vue']
   }
 })
