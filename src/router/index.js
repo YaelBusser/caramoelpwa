@@ -1,12 +1,12 @@
 import {createRouter, createWebHistory} from "vue-router";
-import Home from "../src/views/Home.vue";
-import Restaurants from "../src/views/Restaurants.vue";
-import Connexion from "../src/views/Connexion.vue";
-import Inscription from "../src/views/Inscription.vue";
-import Profile from "../src/views/Profile.vue";
-import Panier from "../src/views/Panier.vue";
-import Produits from "../src/views/Produits.vue";
-import ProfileInfos from "../src/views/ProfileInfos.vue";
+import Home from "../views/Home.vue";
+import Restaurants from "../views/Restaurants.vue";
+import Connexion from "../views/Connexion.vue";
+import Inscription from "../views/Inscription.vue";
+import Profile from "../views/Profile.vue";
+import Panier from "../views/Panier.vue";
+import Produits from "../views/Produits.vue";
+import ProfileInfos from "../views/ProfileInfos.vue";
 const routes = [
     {
         name: 'Home',
