@@ -13,10 +13,8 @@
 </template>
 
 <script>
-import bcrypt from 'bcryptjs';
 import store from "../../store.js";
 import {mapGetters} from "vuex";
-import * as path from "path";
 
 export default {
   data() {
