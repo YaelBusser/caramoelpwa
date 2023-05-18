@@ -1,7 +1,7 @@
 <template>
   <div class="block">
     <div class="container">
-      <img src="https://i.ibb.co/gyP5VF3/logo-caramoel.png"/>
+      <img src="https://i.ibb.co/gyP5VF3/logo-caramoel.png" alt=""/>
       <input type="email" placeholder="Adresse mail" v-model="email"/>
       <input type="password" placeholder="Mot de passe" v-model="mdp"/>
       <input type="button" value="Se connecter" @click="login"/>
@@ -13,9 +13,7 @@
 </template>
 
 <script>
-import store from "../../store.js";
 import {mapGetters} from "vuex";
-
 export default {
   data() {
     return {
@@ -32,9 +30,6 @@ export default {
     ...mapGetters(['getUser',]),
   },
   methods: {
-    path() {
-      return path
-    },
     async login() {
       const response = await fetch("http://192.168.68.29/api/users");
       const users = await response.json();
