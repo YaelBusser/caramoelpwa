@@ -17,6 +17,7 @@
     "@capacitor/haptics": "next",
     "@capacitor/keyboard": "next",
     "@capacitor/status-bar": "next",
+    "@vue/runtime-dom": "^3.3.2",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "nodemailer": "^6.9.1",
