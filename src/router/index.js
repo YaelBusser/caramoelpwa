@@ -7,6 +7,9 @@ import Profile from "../views/Profile.vue";
 import Panier from "../views/Panier.vue";
 import Produits from "../views/Produits.vue";
 import ProfileInfos from "../views/ProfileInfos.vue";
+import Commandes from "../views/Commandes.vue";
+import commande from "../views/Commande.vue";
+import Commande from "../views/Commande.vue";
 const routes = [
     {
         name: 'Home',
@@ -37,6 +40,16 @@ const routes = [
         name: 'Panier',
         path: '/panier',
         component: Panier,
+    },
+    {
+        name: 'Commandes',
+        path: '/commandes',
+        component: Commandes,
+    },
+    {
+        name: 'Commande',
+        path: '/commande',
+        component: Commande,
     },
     {
         name: 'Produits',

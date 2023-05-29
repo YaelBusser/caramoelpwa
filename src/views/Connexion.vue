@@ -1,7 +1,7 @@
 <template>
   <div class="block">
     <div class="container">
-      <img src="https://i.ibb.co/gyP5VF3/logo-caramoel.png" alt=""/>
+      <img src="https://i.ibb.co/gyP5VF3/logo-caramoel.png"/>
       <input type="email" placeholder="Adresse mail" v-model="email"/>
       <input type="password" placeholder="Mot de passe" v-model="mdp"/>
       <input type="button" value="Se connecter" @click="login"/>
@@ -13,7 +13,10 @@
 </template>
 
 <script>
+import bcrypt from 'bcryptjs';
 import {mapGetters} from "vuex";
+import * as path from "path";
+
 export default {
   data() {
     return {
@@ -30,7 +33,15 @@ export default {
     ...mapGetters(['getUser',]),
   },
   methods: {
+    path() {
+      return path
+    },
     async login() {
+      if(this.email === "" || this.mdp === ""){
+        alert("Veuillez remplir tous les champs !");
+        return;
+      }
+
       const response = await fetch("http://192.168.68.29/api/users");
       const users = await response.json();
 
@@ -75,8 +86,8 @@ export default {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background-color: #ee7017;
-  color: white;
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #ee7017;
   border-radius: 10px;
   padding: 1rem;
   width: 80%;
@@ -113,7 +124,7 @@ img {
 }
 
 a {
-  color: white;
+  color: #6c211c;
   text-decoration: none;
   font-weight: bold;
 }

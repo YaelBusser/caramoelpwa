@@ -6,10 +6,12 @@
     <div class="sub-main">
       <h3 class="hero-h3">{{ getUser.firstname }} {{ getUser.name }}</h3>
       <div class="buttons">
-        <button>
-          <i class="fa-solid fa-list"></i>
-          Mes commandes
-        </button>
+        <router-link to="/commandes">
+          <button>
+            <i class="fa-solid fa-list"></i>
+            Mes commandes
+          </button>
+        </router-link>
         <router-link to="/profileInfos">
           <button>
             <i class="fa-regular fa-user"></i>
@@ -74,10 +76,10 @@ a {
   text-transform: uppercase;
   letter-spacing: 3px;
   font-family: 'Roboto';
-  font-weight: 300!important;
+  font-weight: 300 !important;
   display: flex;
   margin-top: 50px;
-  justify-content: center!important;
+  justify-content: center !important;
 }
 
 p {

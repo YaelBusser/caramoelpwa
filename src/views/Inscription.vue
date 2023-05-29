@@ -2,23 +2,22 @@
   <div class="block">
     <div class="container">
       <div class="flex">
-        <input type="text" placeholder="nom" v-model="nom"/>
-        <input type="text" placeholder="prénom" v-model="prenom"/>
+        <input type="text" placeholder="Nom" v-model="nom"/>
+        <input type="text" placeholder="Prénom" v-model="prenom"/>
       </div>
       <div class="flex">
-        <input type="email" placeholder="mail" v-model="mail"/>
-        <input type="tel" maxlength="10" placeholder="téléphone" v-model="tel"/>
+        <input type="email" placeholder="E-mail" v-model="mail"/>
+        <input type="tel" maxlength="10" placeholder="Téléphone" v-model="tel"/>
       </div>
       <div class="flex">
         <input type="text" placeholder="Adresse" class="adresse" v-model="adresse"/>
       </div>
-      <div class="flex">
-        <input type="password" placeholder="Mot de passe" v-model="mdp" @input="validateMdp()"/>
-        <input type="password" placeholder="Confirmez votre mot de passe" v-model="mdp2" @input="validateMdp()"/>
-      </div>
+      <input type="password" placeholder="Mot de passe" class="adresse" v-model="mdp" @input="validateMdp()"/>
+      <input type="password" placeholder="Confirmez votre mot de passe" class="adresse" v-model="mdp2"
+             @input="validateMdp()"/>
       <p class="error" :style="errorMsg ? 'transform: scale(1)' : ''">{{ errorMsg }}</p>
-      <input type="button" value="s'inscrire" @click="register"/>
-      <p>Déjà inscris ? Clique
+      <input type="button" value="S'inscrire" @click="register"/>
+      <p>Déjà inscrit ? Clique
         <router-link to="/connexion">ici</router-link>
       </p>
     </div>
@@ -43,12 +42,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getUser',]),
-
+    ...mapGetters(["getUser"]),
   },
   mounted() {
     if (this.getUser) {
-      this.$router.push('/profile')
+      this.$router.push("/profile");
     }
   },
   methods: {
@@ -56,27 +54,46 @@ export default {
       const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
       if (!passwordRegex.test(this.mdp)) {
         this.mdpError = true;
-        this.errorMsg = "Le mot de passe doit contenir au moins 8 caractères, une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.";
+        this.errorMsg =
+            "Le mot de passe doit contenir au moins 8 caractères, une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.";
         return false; // Le mot de passe ne correspond pas, arrêter la méthode
-      }else{
-        this.errorMsg = '';
+      } else {
+        this.errorMsg = "";
       }
       if (this.mdp !== this.mdp2) {
         this.errorMsg = "Les mots de passe ne correspondent pas.";
         return false; // Le mot de passe ne correspond pas, arrêter la méthode
-      }else{
+      } else {
         this.errorMsg = "";
       }
       return true; // Le mot de passe est valide
     },
+    validateForm() {
+      if (
+          this.nom === "" ||
+          this.prenom === "" ||
+          this.mail === "" ||
+          this.tel === "" ||
+          this.adresse === "" ||
+          this.mdp === "" ||
+          this.mdp2 === ""
+      ) {
+        this.errorMsg = "Veuillez remplir tous les champs.";
+        return false;
+      } else {
+        this.errorMsg = "";
+        return true;
+      }
+    },
     async register() {
-      if (!this.validateMdp()) {
+      if (!this.validateForm() || !this.validateMdp()) {
         return;
       }
+
       fetch(`http://192.168.68.29/api/userCreate`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: this.nom,
@@ -85,27 +102,28 @@ export default {
           telephone: this.tel,
           password: this.mdp,
           adresse: this.adresse,
-        })
-      }).then(response => response.json())
-          .then(data => {
+        }),
+      })
+          .then((response) => response.json())
+          .then((data) => {
             console.log(data.message);
-            alert("Votre compte a été créer avec succès !" + data);
+            alert("Votre compte a été créé avec succès !");
           })
-          .catch(error => {
-            console.log(error)
+          .catch((error) => {
+            console.log(error);
           });
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
-.error{
-  background-color: #d71604;
-  padding: 0;
+.error {
+  background-color: #f85d52;
+  padding: 10px;
   border-radius: 10px;
-  width: 200px;
-  font-family: 'Roboto';
+  width: 85%;
+  font-family: "Roboto";
   font-weight: 500;
   text-align: justify;
   letter-spacing: 2px;
@@ -113,7 +131,9 @@ export default {
   margin-block-start: 0;
   margin-block-end: 0;
   transition: all 0.3s ease-in-out;
+  color: white;
 }
+
 input[type=button] {
   width: 90%;
 }
@@ -146,8 +166,8 @@ input[type=button] {
   align-items: center;
   gap: 20px;
   width: 80%;
-  background-color: rgba(0,0,0,0.05);
-  color: white;
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #ee7017;
   border-radius: 10px;
   padding-top: 1.5rem;
 }
@@ -178,9 +198,8 @@ img {
 }
 
 a {
-  color: white;
+  color: #6c211c;
   text-decoration: none;
   font-weight: bold;
 }
 </style>
-  

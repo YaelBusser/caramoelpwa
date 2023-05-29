@@ -95,6 +95,12 @@ export default {
         case "/produits":
           this.h2 = "Cuisines";
           break;
+        case "/commandes":
+          this.h2 = "Mes commandes";
+          break;
+          case "/commande":
+          this.h2 = "Ma commande";
+          break;
         case "/":
           this.h2 = "Accueil";
           break;

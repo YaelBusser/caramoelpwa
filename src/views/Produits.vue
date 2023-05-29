@@ -166,6 +166,7 @@ export default {
       }
     },
     modal(id) {
+      this.counter = 1;
       this.toggleModal = !this.toggleModal;
       if (this.toggleModal) {
         fetch(`http://192.168.68.29/api/produit/${id}`)
